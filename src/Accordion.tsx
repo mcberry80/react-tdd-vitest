@@ -5,11 +5,15 @@ type AccordionProps = {
   }
 
 
-const Accordion: React.FC<AccordionProps> = (props: PropsWithChildren<AccordionProps>) => {
+const Accordion = (props: PropsWithChildren<AccordionProps>) => {
     const [showContent, setShowContent] = useState(false)
+    const [buttonResponse, setButtonResponse] = useState('Bruh')
 
-    const showContentHandler = () => {
+    const showContentHandler = async () => {
         setShowContent(!showContent);
+        await fetch("http://movies.com/1234")
+        .then((response) => response.json())
+        .then((data) => setButtonResponse(data.first));
     }
 
     return(
@@ -20,7 +24,8 @@ const Accordion: React.FC<AccordionProps> = (props: PropsWithChildren<AccordionP
             <div className="accordion-content">
                 {showContent && props.children}
             </div>
-            <button onClick={showContentHandler}>{!showContent ? 'Show' : 'Hide'}</button>
+            <button onClick={showContentHandler}>Toggle</button>
+            {buttonResponse}
         </div>
     )
 }
